@@ -65,12 +65,12 @@ def on_ui_tabs():
     #                                 warpfn=wrap_queued_call)
     video_to_video = init_ui()
 
-    return [(video_to_video, "Video Gen", "extension")]
+    return [(video_to_video, "Video Gen", "videogen_interface")]
 
 
 def on_ui_settings():
     video_path = Path(paths.script_path) / "outputs"
-    section = ('extension', "VideoGen")
+    section = ('videogen_interface', "VideoGen")
     opts.add_option("videogen_result_dir",
                     OptionInfo(str(video_path / "VideoGen/"), "Path to save results of VideoGen", section=section))
 
