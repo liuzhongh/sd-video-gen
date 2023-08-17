@@ -63,7 +63,7 @@ def on_ui_tabs():
     #
     # video_to_video = sadtalker_demo(checkpoint_path=checkpoint_path, config_path=repo_dir + 'src/config',
     #                                 warpfn=wrap_queued_call)
-    video_to_video = result_dir
+    video_to_video = init_ui()
 
     return [(video_to_video, "Video Gen", "extension")]
 
