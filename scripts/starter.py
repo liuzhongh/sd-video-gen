@@ -66,7 +66,7 @@ def on_ui_tabs():
     #                                 warpfn=wrap_queued_call)
     video_to_video = init_ui()
 
-    return [(video_to_video, "Video Gen", "videogen_interface")]
+    return video_to_video, "Video Gen", "videogen_interface"
 
 
 def on_ui_settings():
