@@ -35,7 +35,7 @@ def init_ui():
                                          outputs=[images_tmp_path])
                     with gr.TabItem('Step Two'):
                         with gr.Column(variant='panel'):
-                            gr.Markdown(f"将第一步由视频分解的图片{images_tmp_path}放入controlnet中进行批量处理")
+                            gr.Markdown(f"将第一步视频分解的图片放入controlnet中进行批量处理")
                     with gr.TabItem('Step Three'):
                         with gr.Column(variant='panel'):
                             gen_video = gr.Video(label="Generated video", format="mp4").style(width=256)
