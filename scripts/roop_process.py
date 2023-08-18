@@ -4,6 +4,8 @@ import roop.globals
 
 def init_params(source_path, target_path, output_path, keep_temporary_frames,
                                                  many_faces):
+    v = k_diffusion.sampling.append_zero(22)
+    print(f"******************{v}")
     print(f"{source_path}")
     roop.globals.source_path = source_path
     roop.globals.target_path = target_path
