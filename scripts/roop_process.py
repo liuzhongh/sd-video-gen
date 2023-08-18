@@ -1,14 +1,17 @@
-import k_diffusion.sampling
+import roop.globals
+from roop.utilities import detect_fps, extract_frames, get_temp_frame_paths
 
 
-def init_params(source_path, target_path, output_path, keep_temporary_frames,
+def init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary_frames,
                 many_faces):
-    print(f"{source_path}")
-    import roop.globals
-    roop.globals.source_path = source_path
-    roop.globals.target_path = target_path
-    roop.globals.output_path = output_path
+    print(f"{source_video}")
+    roop.globals.target_path = source_video
+    roop.globals.keep_fps = keep_target_fps
     print(f"{roop.globals.source_path}")
+    roop.globals.skip_audio = skip_target_audio
+    roop.globals.keep_frames = keep_temporary_frames
+    roop.globals.many_faces = many_faces
+
     # roop.globals.frame_processors = args.frame_processor
     # roop.globals.keep_fps = args.keep_fps
     # roop.globals.keep_frames = args.keep_frames
@@ -26,7 +29,18 @@ def init_params(source_path, target_path, output_path, keep_temporary_frames,
     # roop.globals.execution_threads = args.execution_threads
 
 
-def splitVideo(source_path, target_path, output_path, keep_temporary_frames,
+def splitVideo(source_video, keep_target_fps, skip_target_audio, keep_temporary_frames,
                many_faces):
-    init_params(source_path, target_path, output_path, keep_temporary_frames,
+    init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary_frames,
                 many_faces)
+
+    # extract frames
+    if roop.globals.keep_fps:
+        fps = detect_fps(roop.globals.target_path)
+        print(f'Extracting frames with {fps} FPS...')
+        extract_frames(roop.globals.target_path, fps)
+    else:
+        print('Extracting frames with 30 FPS...')
+        extract_frames(roop.globals.target_path)
+
+    return get_temp_frame_paths(roop.globals.target_path)
