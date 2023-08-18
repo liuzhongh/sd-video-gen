@@ -7,7 +7,7 @@ def prepare_environment():
     print(f"Git the roop to repositories")
     roop_repo = os.environ.get('ROOP_REPO', 'https://github.com/s0md3v/roop.git')
 
-    roop_commit_hash = os.environ.get('ROOP_COMMIT_HASH', "55b242c17aaec524fba04cda5508e1b4326f78c7")
+    roop_commit_hash = os.environ.get('ROOP_COMMIT_HASH', "b86cc7986afa436df1b16bc4ef68ef00437627eb")
 
     roop_path = os.path.join(extensions_dir, "sd-video-gen-base")
     print(f"Roop repo: {roop_path}")
