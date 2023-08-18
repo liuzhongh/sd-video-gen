@@ -1,14 +1,15 @@
 import roop.globals
 from roop.utilities import detect_fps, extract_frames, get_temp_frame_paths
 from modules.shared import opts
+from scripts.ext_logging import logger
 
 
 def init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary_frames,
                 many_faces):
-    print(f"Source path: {source_video}, {opts.videogen_result_dir}")
+    logger.info("Source path: %s, %s", source_video, opts.videogen_result_dir)
     roop.globals.target_path = source_video
     roop.globals.keep_fps = keep_target_fps
-    print(f"Source path: {roop.globals.source_path}")
+    logger.info("Source path: %s", roop.globals.source_path)
     roop.globals.skip_audio = skip_target_audio
     roop.globals.keep_frames = keep_temporary_frames
     roop.globals.many_faces = many_faces
@@ -60,10 +61,10 @@ def splitVideo(source_video, keep_target_fps, skip_target_audio, keep_temporary_
     # extract frames
     if roop.globals.keep_fps:
         fps = detect_fps(roop.globals.target_path)
-        print(f'Extracting frames with {fps} FPS...')
+        logger.info('Extracting frames with %s FPS...', fps)
         extract_frames(roop.globals.target_path, fps)
     else:
-        print('Extracting frames with 30 FPS...')
+        logger.info('Extracting frames with 30 FPS...')
         extract_frames(roop.globals.target_path)
 
     return get_temp_frame_paths(roop.globals.target_path)
