@@ -134,11 +134,15 @@ def mergeVideo():
         logger.info('Creating video with 30 FPS...')
         create_video(roop.globals.target_path)
 
-    return os.path.join(roop.globals.target_path.split("/")[-1], "temp.mp4")
+    return get_output_path()
+
+
+def get_output_path():
+    return os.path.join(opts.videogen_result_dir, "temp.mp4")
 
 
 def create_video(target_path: str, fps: float = 30) -> bool:
-    temp_output_path = os.path.join(opts.videogen_result_dir, "temp.mp4")
+    temp_output_path = get_output_path()
     temp_directory_path = get_temp_directory_path(target_path)
     output_video_quality = (roop.globals.output_video_quality + 1) * 51 // 100
     logger.info('temp_output_path: %s', temp_output_path)
