@@ -18,7 +18,7 @@ def init_ui():
                 with gr.Tabs(elem_id="videogen_source_video"):
                     with gr.TabItem('Step One'):
                         with gr.Column(variant='panel'):
-                            source_video = gr.Video(label="Source Video", source="upload", type="filepath")
+                            source_video = gr.Video(label="Source Video", source="upload", type="filepath").style(width=256)
                             keep_target_fps = gr.Checkbox(label="Keep target fps", value=True)
                             skip_target_audio = gr.Checkbox(label="Skip target audio", value=False)
                             keep_temporary_frames = gr.Checkbox(label="Keep temporary frames", value=True)
