@@ -1,9 +1,8 @@
 import k_diffusion.sampling
 
 
-
 def init_params(source_path, target_path, output_path, keep_temporary_frames,
-                                                 many_faces):
+                many_faces):
     v = k_diffusion.sampling.append_zero(22)
     print(f"******************{v}")
     print(f"{source_path}")
@@ -30,6 +29,6 @@ def init_params(source_path, target_path, output_path, keep_temporary_frames,
 
 
 def splitVideo(source_path, target_path, output_path, keep_temporary_frames,
-                                                 many_faces):
+               many_faces):
     init_params(source_path, target_path, output_path, keep_temporary_frames,
-                                                 many_faces)
+                many_faces)
