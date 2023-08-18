@@ -1,5 +1,5 @@
 import k_diffusion.sampling
-import roop.globals
+
 
 
 def init_params(source_path, target_path, output_path, keep_temporary_frames,
@@ -7,6 +7,7 @@ def init_params(source_path, target_path, output_path, keep_temporary_frames,
     v = k_diffusion.sampling.append_zero(22)
     print(f"******************{v}")
     print(f"{source_path}")
+    import roop.globals
     roop.globals.source_path = source_path
     roop.globals.target_path = target_path
     roop.globals.output_path = output_path
