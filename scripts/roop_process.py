@@ -1,13 +1,14 @@
 import roop.globals
 from roop.utilities import detect_fps, extract_frames, get_temp_frame_paths
+from modules.shared import opts
 
 
 def init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary_frames,
                 many_faces):
-    print(f"{source_video}")
+    print(f"Source path: {source_video}, {opts.videogen_result_dir}")
     roop.globals.target_path = source_video
     roop.globals.keep_fps = keep_target_fps
-    print(f"{roop.globals.source_path}")
+    print(f"Source path: {roop.globals.source_path}")
     roop.globals.skip_audio = skip_target_audio
     roop.globals.keep_frames = keep_temporary_frames
     roop.globals.many_faces = many_faces
