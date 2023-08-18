@@ -1,4 +1,4 @@
-import roop.globals
+import roop.roop.globals
 
 
 def init_params(source_path, target_path, output_path):
