@@ -123,3 +123,30 @@ def run_ffmpeg(args: List[str]) -> bool:
     except Exception:
         pass
     return False
+
+
+def mergeVideo():
+    if roop.globals.keep_fps:
+        fps = detect_fps(roop.globals.target_path)
+        logger.info('Creating video with %s FPS...', fps)
+        create_video(roop.globals.target_path, fps)
+    else:
+        logger.info('Creating video with 30 FPS...')
+        create_video(roop.globals.target_path)
+
+    return os.path.join(roop.globals.target_path.split("/")[-1], "temp.mp4")
+
+
+def create_video(target_path: str, fps: float = 30) -> bool:
+    temp_output_path = os.path.join(target_path.split("/")[-1], "temp.mp4")
+    temp_directory_path = get_temp_directory_path(target_path)
+    output_video_quality = (roop.globals.output_video_quality + 1) * 51 // 100
+    commands = ['-hwaccel', 'auto', '-r', str(fps), '-i',
+                os.path.join(temp_directory_path, '%04d.' + roop.globals.temp_frame_format), '-c:v',
+                roop.globals.output_video_encoder]
+    if roop.globals.output_video_encoder in ['libx264', 'libx265', 'libvpx']:
+        commands.extend(['-crf', str(output_video_quality)])
+    if roop.globals.output_video_encoder in ['h264_nvenc', 'hevc_nvenc']:
+        commands.extend(['-cq', str(output_video_quality)])
+    commands.extend(['-pix_fmt', 'yuv420p', '-vf', 'colorspace=bt709:iall=bt601-6-625:fast=1', '-y', temp_output_path])
+    return run_ffmpeg(commands)

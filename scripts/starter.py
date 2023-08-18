@@ -4,7 +4,7 @@ from pathlib import Path
 import gradio as gr
 from modules.shared import opts, OptionInfo
 from modules import shared, paths, script_callbacks
-from scripts.roop_process import splitVideo
+from scripts.roop_process import splitVideo, mergeVideo
 
 
 def submit_fn():
@@ -41,13 +41,7 @@ def init_ui():
                         with gr.Column(variant='panel'):
                             gen_video = gr.Video(label="Generated video", format="mp4").style(width=256)
                             submit = gr.Button("Generate", elem_id="video_generate")
-                            submit.click(fn=submit_fn,
-                                         inputs=[source_video,
-                                                 keep_target_fps,
-                                                 skip_target_audio,
-                                                 keep_temporary_frames,
-                                                 many_faces
-                                                 ],
+                            submit.click(fn=mergeVideo,
                                          outputs=[gen_video])
     return videogen_ui
 
