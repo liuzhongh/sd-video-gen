@@ -1,13 +1,25 @@
+import os
+import shutil
+import subprocess
+
 import roop.globals
-from roop.utilities import detect_fps, extract_frames, get_temp_frame_paths
+from roop.utilities import extract_frames, get_temp_frame_paths
 from modules.shared import opts
 from scripts.ext_logging import logger
 
 
 def init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary_frames,
                 many_faces):
-    logger.info("Source path: %s, %s", source_video, opts.videogen_result_dir)
-    roop.globals.target_path = source_video
+    if not source_video:
+        return
+
+    file_name = source_video.split("/")[-1]
+    target_path = os.path.join(opts.videogen_result_dir, "tmp", file_name)
+
+    shutil.move(source_video, target_path)
+
+    logger.info("Source path: %s, %s", source_video, target_path)
+    roop.globals.target_path = target_path
     roop.globals.keep_fps = keep_target_fps
     logger.info("Source path: %s", roop.globals.source_path)
     roop.globals.skip_audio = skip_target_audio
@@ -68,3 +80,15 @@ def splitVideo(source_video, keep_target_fps, skip_target_audio, keep_temporary_
         extract_frames(roop.globals.target_path)
 
     return get_temp_frame_paths(roop.globals.target_path)
+
+
+def detect_fps(target_path: str) -> float:
+    command = ['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=r_frame_rate', '-of',
+               'default=noprint_wrappers=1:nokey=1', target_path]
+    output = subprocess.check_output(command).decode().strip().split('/')
+    try:
+        numerator, denominator = map(int, output)
+        return numerator / denominator
+    except Exception:
+        pass
+    return 30
