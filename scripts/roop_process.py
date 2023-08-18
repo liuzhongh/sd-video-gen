@@ -104,7 +104,7 @@ def detect_fps(target_path: str) -> float:
 def extract_frames(target_path: str, fps: float = 30) -> bool:
     temp_directory_path = get_temp_directory_path(target_path)
     temp_frame_quality = roop.globals.temp_frame_quality * 31 // 100
-    logger.info("temp_directory_path %s, temp_frame_quality %d", temp_frame_quality, temp_frame_quality)
+    logger.info("temp_directory_path %s, temp_frame_quality %d", temp_directory_path, temp_frame_quality)
     return run_ffmpeg(['-hwaccel', 'auto', '-i', target_path, '-q:v', str(temp_frame_quality), '-pix_fmt', 'rgb24', '-vf', 'fps=' + str(fps), os.path.join(temp_directory_path, '%04d.' + roop.globals.temp_frame_format)])
 
 
