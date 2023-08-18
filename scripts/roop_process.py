@@ -10,11 +10,14 @@ from scripts.ext_logging import logger
 
 def init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary_frames,
                 many_faces):
-    if not source_video:
+    if source_video is None:
         return
 
     file_name = source_video.split("/")[-1]
-    target_path = os.path.join(opts.videogen_result_dir, "tmp", file_name)
+
+    target_path = os.path.join(opts.videogen_result_dir, "tmp")
+    os.makedirs(target_path, exist_ok=True)
+    target_path = os.path.join(target_path, file_name)
 
     shutil.move(source_video, target_path)
 
