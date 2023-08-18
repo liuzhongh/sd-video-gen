@@ -11,7 +11,7 @@ def prepare_environment():
 
     roop_path = os.path.join(script_path, "roop")
     print(f"Roop repo: {roop_path}")
-    launch.git_clone(roop_repo, roop_path, "Roop", roop_commit_hash)
+    # launch.git_clone(roop_repo, roop_path, "Roop", roop_commit_hash)
 
 
 prepare_environment()
