@@ -3,8 +3,6 @@ import k_diffusion.sampling
 
 def init_params(source_path, target_path, output_path, keep_temporary_frames,
                 many_faces):
-    v = k_diffusion.sampling.append_zero(22)
-    print(f"******************{v}")
     print(f"{source_path}")
     import roop.globals
     roop.globals.source_path = source_path
