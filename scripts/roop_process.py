@@ -134,15 +134,51 @@ def mergeVideo():
         logger.info('Creating video with 30 FPS...')
         create_video(roop.globals.target_path)
 
-    return get_output_path()
+    # handle audio
+    output_path = get_output_path()
+    if roop.globals.skip_audio:
+        move_temp(roop.globals.target_path, output_path)
+        logger.info('Skipping audio...')
+    else:
+        if roop.globals.keep_fps:
+            logger.info('Restoring audio...')
+        else:
+            logger.info('Restoring audio might cause issues as fps are not kept...')
+        restore_audio(roop.globals.target_path, output_path)
+    # clean temp
+    logger.info('Cleaning temporary resources...')
+    clean_temp(roop.globals.target_path)
+
+    return output_path
+
+
+def get_temp_output_path(target_path: str) -> str:
+    temp_directory_path = get_temp_directory_path(target_path)
+    return os.path.join(temp_directory_path, "video", "temp.mp4")
 
 
 def get_output_path():
     return os.path.join(opts.videogen_result_dir, "temp.mp4")
 
 
+def clean_temp(target_path: str) -> None:
+    temp_directory_path = get_temp_directory_path(target_path)
+    parent_directory_path = os.path.dirname(temp_directory_path)
+    if not roop.globals.keep_frames and os.path.isdir(temp_directory_path):
+        shutil.rmtree(temp_directory_path)
+    if os.path.exists(parent_directory_path) and not os.listdir(parent_directory_path):
+        os.rmdir(parent_directory_path)
+
+
+def move_temp(target_path: str, output_path: str) -> None:
+    temp_output_path = get_temp_output_path(target_path)
+    if os.path.isfile(temp_output_path):
+        if os.path.isfile(output_path):
+            os.remove(output_path)
+        shutil.move(temp_output_path, output_path)
+
 def create_video(target_path: str, fps: float = 30) -> bool:
-    temp_output_path = get_output_path()
+    temp_output_path = get_temp_output_path(target_path)
     temp_directory_path = get_temp_directory_path(target_path)
     output_video_quality = (roop.globals.output_video_quality + 1) * 51 // 100
     logger.info('temp_output_path: %s', temp_output_path)
@@ -155,3 +191,9 @@ def create_video(target_path: str, fps: float = 30) -> bool:
         commands.extend(['-cq', str(output_video_quality)])
     commands.extend(['-pix_fmt', 'yuv420p', '-vf', 'colorspace=bt709:iall=bt601-6-625:fast=1', '-y', temp_output_path])
     return run_ffmpeg(commands)
+
+
+def restore_audio(target_path: str, output_path: str) -> None:
+    temp_output_path = get_temp_output_path(target_path)
+    run_ffmpeg(['-hwaccel', 'auto', '-i', temp_output_path, '-i', target_path, '-c:v', 'copy', '-map', '0:v:0', '-map',
+                '1:a:0', '-y', output_path])
