@@ -148,7 +148,7 @@ def mergeVideo():
         restore_audio(roop.globals.target_path, output_path)
     # clean temp
     logger.info('Cleaning temporary resources...')
-    clean_temp(roop.globals.target_path)
+    # clean_temp(roop.globals.target_path)
 
     return output_path
 
