@@ -177,6 +177,7 @@ def move_temp(target_path: str, output_path: str) -> None:
             os.remove(output_path)
         shutil.move(temp_output_path, output_path)
 
+
 def create_video(target_path: str, fps: float = 30) -> bool:
     temp_output_path = get_temp_output_path(target_path)
     temp_directory_path = get_temp_directory_path(target_path)
