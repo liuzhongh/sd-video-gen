@@ -4,6 +4,10 @@ import launch
 
 
 def prepare_environment():
+    current_dir = os.getcwd()
+    folder_name = os.path.basename(current_dir)
+    print(folder_name)
+
     print(f"Git the roop to repositories")
     roop_repo = os.environ.get('ROOP_REPO', 'https://github.com/s0md3v/roop.git')
 
