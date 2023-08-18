@@ -148,15 +148,16 @@ def mergeVideo():
         restore_audio(roop.globals.target_path, output_path)
     # clean temp
     logger.info('Cleaning temporary resources...')
-    # clean_temp(roop.globals.target_path)
+    clean_temp(roop.globals.target_path)
 
     return output_path
 
 
-def get_temp_output_path(target_path: str) -> str:
+def get_temp_output_path(target_path: str, createPath=False) -> str:
     temp_directory_path = os.path.dirname(target_path)
     temp_directory_path = os.path.join(temp_directory_path, "video")
-    os.makedirs(temp_directory_path, exist_ok=True)
+    if createPath:
+        os.makedirs(temp_directory_path, exist_ok=True)
     return os.path.join(temp_directory_path, "temp.mp4")
 
 
@@ -170,10 +171,9 @@ def clean_temp(target_path: str) -> None:
     logger.info("temp_directory_path %s, parent_directory_path %s, keep_frames %s", temp_directory_path, parent_directory_path, roop.globals.keep_frames)
     if os.path.isdir(temp_directory_path):
         shutil.rmtree(temp_directory_path)
-
     logger.info("os.listdir(parent_directory_path) %s", os.listdir(parent_directory_path))
-    # if os.path.exists(parent_directory_path) and not os.listdir(parent_directory_path):
-        # os.rmdir(parent_directory_path)
+    if os.path.exists(parent_directory_path) and not os.listdir(parent_directory_path):
+        os.rmdir(parent_directory_path)
 
 
 def move_temp(target_path: str, output_path: str) -> None:
@@ -185,7 +185,7 @@ def move_temp(target_path: str, output_path: str) -> None:
 
 
 def create_video(target_path: str, fps: float = 30) -> bool:
-    temp_output_path = get_temp_output_path(target_path)
+    temp_output_path = get_temp_output_path(target_path, True)
     temp_directory_path = get_temp_directory_path(target_path)
     output_video_quality = (roop.globals.output_video_quality + 1) * 51 // 100
     logger.info('temp_output_path: %s', temp_output_path)
