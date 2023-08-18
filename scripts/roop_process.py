@@ -168,8 +168,10 @@ def clean_temp(target_path: str) -> None:
     logger.info("temp_directory_path %s, parent_directory_path %s, keep_frames %s", temp_directory_path, parent_directory_path, roop.globals.keep_frames)
     if os.path.isdir(temp_directory_path):
         shutil.rmtree(temp_directory_path)
-    if os.path.exists(parent_directory_path) and not os.listdir(parent_directory_path):
-        os.rmdir(parent_directory_path)
+
+    logger.info("os.listdir(parent_directory_path) %s", os.listdir(parent_directory_path))
+    # if os.path.exists(parent_directory_path) and not os.listdir(parent_directory_path):
+        # os.rmdir(parent_directory_path)
 
 
 def move_temp(target_path: str, output_path: str) -> None:
