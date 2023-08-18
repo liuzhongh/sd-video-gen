@@ -139,7 +139,7 @@ def mergeVideo():
 
 def create_video(target_path: str, fps: float = 30) -> bool:
     logger.info('target_path: %s', target_path)
-    temp_output_path = os.path.join(target_path.split("/")[-1], "temp.mp4")
+    temp_output_path = os.path.join(opts.videogen_result_dir, "temp.mp4")
     temp_directory_path = get_temp_directory_path(target_path)
     output_video_quality = (roop.globals.output_video_quality + 1) * 51 // 100
     commands = ['-hwaccel', 'auto', '-r', str(fps), '-i',
