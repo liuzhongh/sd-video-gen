@@ -136,6 +136,7 @@ def mergeVideo():
 
     # handle audio
     output_path = get_output_path()
+    logger.info('skip_audio %s', roop.globals.skip_audio)
     if roop.globals.skip_audio:
         move_temp(roop.globals.target_path, output_path)
         logger.info('Skipping audio...')
