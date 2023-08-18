@@ -9,8 +9,6 @@ from modules.shared import opts
 from scripts.ext_logging import logger
 
 
-TEMP_DIRECTORY = 'temp'
-
 def init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary_frames,
                 many_faces):
     if source_video is None:
@@ -86,7 +84,7 @@ def splitVideo(source_video, keep_target_fps, skip_target_audio, keep_temporary_
         logger.info('Extracting frames with 30 FPS...')
         extract_frames(roop.globals.target_path)
 
-    return get_temp_frame_paths(roop.globals.target_path)
+    return get_temp_directory_path(roop.globals.target_path)
 
 
 def detect_fps(target_path: str) -> float:
@@ -106,13 +104,15 @@ def extract_frames(target_path: str, fps: float = 30) -> bool:
     temp_frame_quality = roop.globals.temp_frame_quality * 31 // 100
     os.makedirs(temp_directory_path, exist_ok=True)
     logger.info("temp_directory_path %s, temp_frame_quality %d", temp_directory_path, temp_frame_quality)
-    return run_ffmpeg(['-hwaccel', 'auto', '-i', target_path, '-q:v', str(temp_frame_quality), '-pix_fmt', 'rgb24', '-vf', 'fps=' + str(fps), os.path.join(temp_directory_path, '%04d.' + roop.globals.temp_frame_format)])
+    return run_ffmpeg(
+        ['-hwaccel', 'auto', '-i', target_path, '-q:v', str(temp_frame_quality), '-pix_fmt', 'rgb24', '-vf',
+         'fps=' + str(fps), os.path.join(temp_directory_path, '%04d.' + roop.globals.temp_frame_format)])
 
 
 def get_temp_directory_path(target_path: str) -> str:
     target_name, _ = os.path.splitext(os.path.basename(target_path))
     target_directory_path = os.path.dirname(target_path)
-    return os.path.join(target_directory_path, TEMP_DIRECTORY, target_name)
+    return os.path.join(target_directory_path, target_name)
 
 
 def run_ffmpeg(args: List[str]) -> bool:
