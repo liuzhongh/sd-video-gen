@@ -4,6 +4,7 @@ from pathlib import Path
 import gradio as gr
 from modules.shared import opts, OptionInfo
 from modules import shared, paths, script_callbacks
+from scripts.roop_process import splitVideo
 
 
 def submit_fn():
@@ -25,7 +26,7 @@ def init_ui():
                             submit = gr.Button("Generate", elem_id="images_generate", variant='primary')
                             images_tmp_path = gr.Textbox(label='Path to split video to generate images', lines=1,
                                                          redonly=True)
-                            submit.click(fn=submit_fn,
+                            submit.click(fn=splitVideo,
                                          inputs=[source_video,
                                                  keep_target_fps,
                                                  skip_target_audio,
