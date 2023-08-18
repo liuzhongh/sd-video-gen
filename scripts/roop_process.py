@@ -1,12 +1,15 @@
 import os
 import shutil
 import subprocess
+from typing import List
 
 import roop.globals
-from roop.utilities import extract_frames, get_temp_frame_paths
+from roop.utilities import get_temp_frame_paths
 from modules.shared import opts
 from scripts.ext_logging import logger
 
+
+TEMP_DIRECTORY = 'temp'
 
 def init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary_frames,
                 many_faces):
@@ -63,6 +66,7 @@ def init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary
     roop.globals.temp_frame_quality = 0
     roop.globals.output_video_encoder = "libx264"
     roop.globals.output_video_quality = 35
+    roop.globals.log_level = "info"
     # roop.globals.max_memory = args.max_memory
     # roop.globals.execution_providers = decode_execution_providers(args.execution_provider)
     # roop.globals.execution_threads = args.execution_threads
@@ -95,3 +99,27 @@ def detect_fps(target_path: str) -> float:
     except Exception:
         pass
     return 30
+
+
+def extract_frames(target_path: str, fps: float = 30) -> bool:
+    temp_directory_path = get_temp_directory_path(target_path)
+    temp_frame_quality = roop.globals.temp_frame_quality * 31 // 100
+    logger.info("temp_directory_path %s, temp_frame_quality %d", temp_frame_quality, temp_frame_quality)
+    return run_ffmpeg(['-hwaccel', 'auto', '-i', target_path, '-q:v', str(temp_frame_quality), '-pix_fmt', 'rgb24', '-vf', 'fps=' + str(fps), os.path.join(temp_directory_path, '%04d.' + roop.globals.temp_frame_format)])
+
+
+def get_temp_directory_path(target_path: str) -> str:
+    target_name, _ = os.path.splitext(os.path.basename(target_path))
+    target_directory_path = os.path.dirname(target_path)
+    return os.path.join(target_directory_path, TEMP_DIRECTORY, target_name)
+
+
+def run_ffmpeg(args: List[str]) -> bool:
+    commands = ['ffmpeg', '-hide_banner', '-loglevel', roop.globals.log_level]
+    commands.extend(args)
+    try:
+        subprocess.check_output(commands, stderr=subprocess.STDOUT)
+        return True
+    except Exception:
+        pass
+    return False
