@@ -29,5 +29,7 @@ def init_params(source_path, target_path, output_path, keep_temporary_frames,
     # roop.globals.execution_threads = args.execution_threads
 
 
-def splitVideo(source_path, target_path, output_path):
-    init_params(source_path, target_path, output_path)
+def splitVideo(source_path, target_path, output_path, keep_temporary_frames,
+                                                 many_faces):
+    init_params(source_path, target_path, output_path, keep_temporary_frames,
+                                                 many_faces)
