@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+import uuid
 from typing import List
 
 import roop.globals
@@ -109,9 +110,8 @@ def extract_frames(target_path: str, fps: float = 30) -> bool:
 
 
 def get_temp_directory_path(target_path: str) -> str:
-    target_name, _ = os.path.splitext(os.path.basename(target_path))
     target_directory_path = os.path.dirname(target_path)
-    return os.path.join(target_directory_path, target_name)
+    return os.path.join(target_directory_path, "images")
 
 
 def run_ffmpeg(args: List[str]) -> bool:
@@ -162,7 +162,7 @@ def get_temp_output_path(target_path: str, createPath=False) -> str:
 
 
 def get_output_path():
-    return os.path.join(opts.videogen_result_dir, "temp.mp4")
+    return os.path.join(opts.videogen_result_dir, str(uuid.uuid4()) + "temp.mp4")
 
 
 def clean_temp(target_path: str) -> None:
