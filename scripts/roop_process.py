@@ -162,7 +162,7 @@ def get_temp_output_path(target_path: str, createPath=False) -> str:
 
 
 def get_output_path():
-    return os.path.join(opts.videogen_result_dir, str(uuid.uuid4()) + "temp.mp4")
+    return os.path.join(opts.videogen_result_dir, str(uuid.uuid4()) + ".mp4")
 
 
 def clean_temp(target_path: str) -> None:
