@@ -1,3 +1,4 @@
+import k_diffusion.sampling
 import roop.globals
 
 
