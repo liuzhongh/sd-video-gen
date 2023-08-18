@@ -4,7 +4,6 @@ import subprocess
 from typing import List
 
 import roop.globals
-from roop.utilities import get_temp_frame_paths
 from modules.shared import opts
 from scripts.ext_logging import logger
 
