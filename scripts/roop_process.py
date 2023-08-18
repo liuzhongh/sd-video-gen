@@ -16,7 +16,7 @@ def init_params(source_video, keep_target_fps, skip_target_audio, keep_temporary
 
     file_name = source_video.split("/")[-1]
 
-    target_path = os.path.join(opts.videogen_result_dir, "tmp")
+    target_path = os.path.join(opts.videogen_result_dir, str(uuid.uuid4()))
     os.makedirs(target_path, exist_ok=True)
     target_path = os.path.join(target_path, file_name)
 
