@@ -154,8 +154,10 @@ def mergeVideo():
 
 
 def get_temp_output_path(target_path: str) -> str:
-    temp_directory_path = get_temp_directory_path(target_path)
-    return os.path.join(temp_directory_path, "video", "temp.mp4")
+    temp_directory_path = os.path.dirname(target_path)
+    temp_directory_path = os.path.join(temp_directory_path, "video")
+    os.makedirs(temp_directory_path, exist_ok=True)
+    return os.path.join(temp_directory_path, "temp.mp4")
 
 
 def get_output_path():
