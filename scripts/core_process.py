@@ -157,7 +157,7 @@ def create_video(target_path: str, fps: float = 30) -> bool:
     output_video_quality = (scripts.params.output_video_quality + 1) * 51 // 100
     logger.info('temp_output_path: %s', temp_output_path)
     commands = ['-hwaccel', 'auto', '-r', str(fps), '-i',
-                os.path.join(temp_directory_path, '%04d.' + scripts.params.temp_frame_format), '-c:v',
+                os.path.join(temp_directory_path, '%0*d*.' + scripts.params.temp_frame_format), '-c:v',
                 scripts.params.output_video_encoder]
     if scripts.params.output_video_encoder in ['libx264', 'libx265', 'libvpx']:
         commands.extend(['-crf', str(output_video_quality)])
