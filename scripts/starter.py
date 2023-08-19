@@ -16,7 +16,7 @@ def init_ui():
                             source_video = gr.Video(label="Source Video", source="upload", type="filepath").style(width=256)
                             keep_target_fps = gr.Checkbox(label="Keep target fps", value=True)
                             skip_target_audio = gr.Checkbox(label="Skip target audio", value=False)
-                            temp_frame_format = gr.Radio(['jpg', 'png'], value='png', label='Image Format', info="Image format used for frame extraction")
+                            temp_frame_format = gr.Radio(['png', 'jpg'], value='png', label='Image Format', info="Image format used for frame extraction")
                             temp_frame_quality = gr.Slider(label="Image Quality", info="Image quality used for frame extraction", step=1, maximum=100, value=0)
                             output_video_encoder = gr.Radio(['libx264', 'libx265', 'libvpx-vp9', 'h264_nvenc', 'hevc_nvenc'], value='libx264',
                                                          label="Video Encoder", info='Encoder used for the output video')
