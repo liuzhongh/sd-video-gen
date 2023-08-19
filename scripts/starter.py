@@ -3,7 +3,7 @@ from pathlib import Path
 import gradio as gr
 from modules.shared import opts, OptionInfo
 from modules import shared, paths, script_callbacks
-from scripts.roop_process import splitVideo, mergeVideo
+from scripts.core_process import splitVideo, mergeVideo
 
 
 def init_ui():
