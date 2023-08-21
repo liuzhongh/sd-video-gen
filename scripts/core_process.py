@@ -155,12 +155,12 @@ def move_temp(target_path: str, output_path: str) -> None:
 def rename_temp_image(folder_path: str):
     file_list = os.listdir(folder_path)
     file_list.sort()
-    pattern = r'^\d{7}$'
+    pattern = r'^\d{7}\.png$'
     for index, file_name in enumerate(file_list):
         if re.match(pattern, file_name):
             return
         new_filename = '{:07d}.png'.format(index + 1)
-        src_path = os.path.join(folder_path, folder_path)
+        src_path = os.path.join(folder_path, file_name)
         dst_path = os.path.join(folder_path, new_filename)
         shutil.move(src_path, dst_path)
 
