@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 import subprocess
 import uuid
@@ -76,7 +77,7 @@ def extract_frames(target_path: str, fps: float = 30) -> bool:
     logger.info("temp_directory_path %s, temp_frame_quality %d", temp_directory_path, temp_frame_quality)
     return run_ffmpeg(
         ['-hwaccel', 'auto', '-i', target_path, '-q:v', str(temp_frame_quality), '-pix_fmt', 'rgb24', '-vf',
-         'fps=' + str(fps), os.path.join(temp_directory_path, '%04d.' + scripts.params.temp_frame_format)])
+         'fps=' + str(fps), os.path.join(temp_directory_path, '%07d.' + scripts.params.temp_frame_format)])
 
 
 def get_temp_directory_path(target_path: str) -> str:
@@ -151,13 +152,27 @@ def move_temp(target_path: str, output_path: str) -> None:
         shutil.move(temp_output_path, output_path)
 
 
+def rename_temp_image(folder_path: str):
+    file_list = os.listdir(folder_path)
+    file_list.sort()
+    pattern = r'^\d{7}$'
+    for index, file_name in enumerate(file_list):
+        if re.match(pattern, file_name):
+            return
+        new_filename = '{:07d}.png'.format(index + 1)
+        src_path = os.path.join(folder_path, folder_path)
+        dst_path = os.path.join(folder_path, new_filename)
+        shutil.move(src_path, dst_path)
+
+
 def create_video(target_path: str, fps: float = 30) -> bool:
     temp_output_path = get_temp_output_path(target_path, True)
     temp_directory_path = get_temp_directory_path(target_path)
+    rename_temp_image(temp_directory_path)
     output_video_quality = (scripts.params.output_video_quality + 1) * 51 // 100
     logger.info('temp_output_path: %s', temp_output_path)
     commands = ['-hwaccel', 'auto', '-r', str(fps), '-i',
-                os.path.join(temp_directory_path, '%0*d*.' + scripts.params.temp_frame_format), '-c:v',
+                os.path.join(temp_directory_path, '%07d.' + scripts.params.temp_frame_format), '-c:v',
                 scripts.params.output_video_encoder]
     if scripts.params.output_video_encoder in ['libx264', 'libx265', 'libvpx']:
         commands.extend(['-crf', str(output_video_quality)])
